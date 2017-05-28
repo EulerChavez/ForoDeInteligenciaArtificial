@@ -57,9 +57,9 @@ namespace ForoIA.Models {
     public class LoginViewModel {
 
         [Required]
-        [Display(Name = "Correo electrónico")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Usario")]
+        [StringLength(25)]
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -74,8 +74,15 @@ namespace ForoIA.Models {
     public class RegisterViewModel {
 
         [Required]
+        [StringLength(25)]
+        [Display(Name = "Nombre de usuario")]
+        [System.Web.Mvc.Remote("CheckExistingUser", "Account", HttpMethod = "POST", ErrorMessage = "Usuario no disponible.")]
+        public string UserName { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Correo electrónico")]
+        [System.Web.Mvc.Remote("CheckAvailableEmail", "Account", HttpMethod = "POST", ErrorMessage = "Correo electronico ya registrado.")]
         public string Email { get; set; }
 
         [Required]

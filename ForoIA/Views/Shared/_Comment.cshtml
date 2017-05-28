@@ -1,0 +1,14 @@
+﻿@model ForoIA.Models.Db.Comment
+
+<div class="media">
+    <a class="pull-left" href="#">
+        <img class="media-object" src="http://placehold.it/64x64" alt="">
+    </a>
+    <div class="media-body">
+        <h4 class="media-heading">
+            @Html.ActionLink(Model.UserName, "UserPosts", "Posts", new { userName = Model.UserName }, null)
+            <small>@Model.CommentTime</small>
+        </h4>
+        @Model.Content
+    </div>
+</div>

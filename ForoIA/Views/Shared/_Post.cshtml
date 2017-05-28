@@ -1,0 +1,66 @@
+﻿@model ForoIA.Models.Db.Post
+
+<!-- Blog Post -->
+<!-- Title -->
+<h1>@Model.Title</h1>
+
+<!-- Author -->
+<p class="lead">
+    by @Html.ActionLink(Model.UserName, "UserPosts", "Posts", new { userName = Model.UserName }, null)
+</p>
+
+<hr>
+
+<!-- Date/Time -->
+<p><span class="glyphicon glyphicon-time"></span> Publicado @Model.Date en @Html.ActionLink(Model.Category.Name, "Category", "Posts", new { id = Model.CategoryId }, null)</p>
+<hr>
+
+<!-- Post Content -->
+<p class="lead">@Model.Review</p>
+<p>@Model.Content</p>
+
+<hr>
+
+<!-- Blog Comments -->
+<!-- Comments Form -->
+<div class="well">
+    <h4>Deja tu comentario:</h4>
+    @using (Html.BeginForm("Create", "Comments", FormMethod.Post)) {
+
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(m => m.Id)
+
+        @Html.Hidden("userName", User.Identity.Name)
+
+        @Html.ValidationSummary(false, null, new { @class = "text-danger" })
+
+        @Html.ValidationMessage("identity")
+        @Html.ValidationMessage("content")
+
+        <div role="form">
+            <div class="form-group">
+                <textarea class="form-control" rows="3" name="content" placeholder="Comentar"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Comentar</button>
+        </div>
+
+    }
+
+</div>
+
+<hr />
+
+@if (Model.Commments.Count > 0) {
+
+    foreach (var commet in Model.Commments) {
+
+        Html.RenderPartial("_Comment", commet);
+
+    }
+
+} else {
+
+    <text>Aún no hay comentarios.</text>
+
+}

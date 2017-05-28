@@ -1,0 +1,32 @@
+﻿@model IEnumerable<ForoIA.Models.Db.Post>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@if (Model.Count() > 0) {
+
+    foreach (var post in Model) {
+
+        Html.RenderPartial("_PreviewPost", post);
+
+    }
+
+} else {
+
+    <text>
+
+        <div class="jumbotron">
+            <h2>
+                ¡Aún no hay publicaciones! :(
+            </h2>
+            <br />
+            @if (User.Identity.IsAuthenticated) {
+                <p>@Html.ActionLink("Crear Post", "Create", null, new { @class = "btn btn-default btn-lg" })</p>
+            } else {
+                <p>@Html.ActionLink("Ingresa", "Login", "Account") o @Html.ActionLink("Registrate", "Register", "Account") para crear una.</p>
+            }
+        </div>
+    </text>
+
+}

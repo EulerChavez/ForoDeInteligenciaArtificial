@@ -65,7 +65,7 @@ namespace ForoIA.Controllers {
 
             // No cuenta los errores de inicio de sesión para el bloqueo de la cuenta
             // Para permitir que los errores de contraseña desencadenen el bloqueo de la cuenta, cambie a shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
 
             switch (result) {
 
@@ -143,6 +143,46 @@ namespace ForoIA.Controllers {
 
         }
 
+        #region Metodo remoto - Nombre de Usuario
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult CheckExistingUser(string userName) {
+
+            try {
+
+                return Json(!IsUserNameAvailable(userName));
+
+            } catch (Exception ex) {
+
+                return Json(false);
+
+            }
+
+        }
+
+        private bool IsUserNameAvailable(string userName) => UserManager.FindByName(userName) != null;
+        #endregion
+
+        #region Metodo remoto - Email
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult CheckAvailableEmail(string email) {
+
+            try {
+
+                return Json(!IsEmailAvailable(email));
+
+            } catch (Exception ex) {
+
+                return Json(false);
+
+            }
+
+        }
+
+        private bool IsEmailAvailable(string email) => UserManager.FindByEmail(email) != null; 
+        #endregion
+
         //
         // POST: /Account/Register
         [HttpPost]
@@ -152,7 +192,7 @@ namespace ForoIA.Controllers {
 
             if (ModelState.IsValid) {
 
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
 
                 var result = await UserManager.CreateAsync(user, model.Password);
 
@@ -386,7 +426,7 @@ namespace ForoIA.Controllers {
             }
 
             if (ModelState.IsValid) {
-                
+
                 // Obtener datos del usuario del proveedor de inicio de sesión externo
                 var info = await AuthenticationManager.GetExternalLoginInfoAsync();
 

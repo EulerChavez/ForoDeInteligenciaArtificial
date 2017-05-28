@@ -1,0 +1,23 @@
+﻿@model ForoIA.Models.Db.Post
+
+<!-- Blog Post -->
+<h2>
+    @Model.Title
+</h2>
+
+<p class="lead">
+    por @Html.ActionLink(Model.UserName, "UserPosts", "Posts", new { userName = Model.UserName }, null)
+</p>
+<p><span class="glyphicon glyphicon-time"></span> Publicado @Model.Date en @Html.ActionLink(Model.Category.Name, "Category", "Posts", new { id = Model.CategoryId }, null)</p>
+<hr>
+
+@*<img class="img-responsive" src="http://placehold.it/900x300" alt="">
+    <hr>*@
+
+<p>@Model.Review</p>
+
+<a class="btn btn-primary" href="@Url.Action("Details", "Posts", new { id = Model.Id })">
+    Leer más <span class="glyphicon glyphicon-chevron-right"></span>
+</a>
+
+<hr />

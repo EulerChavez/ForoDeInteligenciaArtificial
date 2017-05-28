@@ -1,0 +1,11 @@
+﻿@model IEnumerable<ForoIA.Models.Db.Comment>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@foreach (var comment in Model) {
+
+    @Html.Partial("_Comment", comment);
+
+}
