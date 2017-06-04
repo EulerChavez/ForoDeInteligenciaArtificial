@@ -22,3 +22,20 @@ select,
 textarea {
     max-width: 100%;
 }
+
+.message-bubble {
+    padding: 10px 0px 10px 0px;
+}
+
+    .message-bubble:nth-child(even) {
+        background-color: #F5F5F5;
+    }
+
+    .message-bubble > * {
+        padding-left: 10px;
+    }
+
+.panel-body {
+    padding: 0px;
+}
+

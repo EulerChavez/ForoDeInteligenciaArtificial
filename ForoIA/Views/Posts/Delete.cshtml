@@ -1,23 +1,15 @@
-﻿@model ForoIA.Models.Db.Post
+﻿@model ForoIA.ViewModel.Post.UserPostsViewModel
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Eliminar publicación";
 }
-
-<h2>Delete</h2>
 
 <h3>¿Está segruo de eliminar esta publicación?</h3>
 <div>
-    <h4>Post</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Category.Name)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
+    <hr />
+
+    <dl class="dl-horizontal">
 
         <dt>
             @Html.DisplayNameFor(model => model.Title)
@@ -28,11 +20,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.UserName)
+            @Html.DisplayNameFor(model => model.Category)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.UserName)
+            @Html.DisplayFor(model => model.Category)
         </dd>
 
         <dt>
@@ -43,22 +35,6 @@
             @Html.DisplayFor(model => model.Date)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Review)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Review)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-
     </dl>
 
     @using (Html.BeginForm()) {
@@ -66,7 +42,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index", "Manage")
+            @Html.ActionLink("Regresar", "Index", "Manage")
         </div>
     }
 </div>

@@ -1,0 +1,39 @@
+﻿@model ForoIA.ViewModel.Test.QuestionViewModel
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">@Model.Question</h3>
+    </div>
+    @using (Ajax.BeginForm("", "Posts", new AjaxOptions() { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "renderBody"})) {
+
+        @Html.AntiForgeryToken()
+
+        <div class="panel-body">
+
+            @foreach (var answer in Model.Answers) {
+
+                @if (Model.QuestionType == 1) {
+
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            @Html.RadioButtonFor(m => m.AnswerId, answer.Key, new { id = answer.Key.ToString() })
+                        </span>
+                        @Html.Label(answer.Key.ToString(), answer.Value, new { @class = "form-control" })
+                    </div>
+
+                } else {
+
+                    @Html.TextAreaFor(m => m.AnswerText, new { @class = "" })
+
+                }
+
+            }
+
+        </div>
+
+        <div class="panel-footer">
+            <button type="submit" class="btn btn-default">Siguiente</button>
+        </div>
+
+    }
+</div>

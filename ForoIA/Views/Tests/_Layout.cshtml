@@ -31,49 +31,8 @@
     </div>
     <div class="container body-content">
 
-        <div class="row">
-
-            <!-- Blog Entries Column -->
-            <div class="col-md-8" id="renderBody">
-                <br />
-
-                @RenderBody()
-            </div>
-
-            <!-- Blog Sidebar Widgets Column -->
-            <div class="col-md-4">
-
-                <br />
-
-                <!-- Blog Search Well -->
-                <div class="well">
-                    <h4>Buscar en el Blog</h4>
-                    @using (Html.BeginForm("Search", "Posts", FormMethod.Post)) {
-
-                        @Html.AntiForgeryToken()
-
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Búsqueda" name="param" id="param">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <span class="glyphicon glyphicon-search"></span>
-                                </button>
-                            </span>
-                        </div>
-
-                    }
-                    <!-- /.input-group -->
-                </div>
-
-                <!--Chat-->
-
-                <div class="well">
-                    <h4>Total de usuarios: @(new Random().Next(0, 1000))</h4>
-                    <p>Total de visitas: @(new Random().Next(1000, 9000))</p>
-                </div>
-
-            </div>
-
+        <div id="renderBody">
+            @RenderBody()
         </div>
 
         <!-- /.row -->
@@ -95,5 +54,6 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
 </body>
 </html>

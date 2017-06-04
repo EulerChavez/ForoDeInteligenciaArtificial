@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ForoIA.Models.Db.Post>
+﻿@model IEnumerable<ForoIA.ViewModel.Post.UserPostsViewModel>
 
 <p>
     @Html.ActionLink("Crear nuevo", "Create")
@@ -10,10 +10,7 @@
             @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Category.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
+            @Html.DisplayNameFor(model => model.Category)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Date)
@@ -29,10 +26,7 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
+                @Html.DisplayFor(modelItem => item.Category)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Date)

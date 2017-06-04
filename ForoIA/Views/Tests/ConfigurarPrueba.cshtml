@@ -1,0 +1,114 @@
+﻿@model ForoIA.ViewModel.Test.ConfigurationTestViewModel
+
+@{
+    ViewBag.Title = "ConfigurarPrueba";
+    Layout = "~/Views/Tests/_Layout.cshtml";
+}
+
+<br />
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Configura tu prueba</h3>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm()) {
+
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(false, null, new { @class = "text-danger"})
+
+            <div class="col-md-6">
+
+                <h5>Selecciona las unidades con las que quieres ser evaluado.</h5>
+                <br />
+
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        @Html.CheckBoxFor(m => m.Unidad1)
+                    </span>
+                    @Html.LabelFor(m => m.Unidad1, new { @class = "form-control" })
+                </div>
+                <br />
+
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        @Html.CheckBoxFor(m => m.Unidad2)
+                    </span>
+                    @Html.LabelFor(m => m.Unidad2, new { @class = "form-control" })
+                </div>
+                <br />
+
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        @Html.CheckBoxFor(m => m.Unidad3)
+                    </span>
+                    @Html.LabelFor(m => m.Unidad3, new { @class = "form-control" })
+                </div>
+                <br />
+
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        @Html.CheckBoxFor(m => m.Unidad4)
+                    </span>
+                    @Html.LabelFor(m => m.Unidad4, new { @class = "form-control" })
+                </div>
+                <br />
+
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        @Html.CheckBoxFor(m => m.Unidad5)
+                    </span>
+                    @Html.LabelFor(m => m.Unidad5, new { @class = "form-control" })
+                </div>
+                <br />
+
+            </div>
+
+            <div class="col-md-6">
+
+                <h5>Selecciona la dificultad con la que quieres ser evaluado.</h5>
+                <br />
+
+                <div id="radio">
+
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            @Html.RadioButtonFor(m => m.Dificultad, "1", new { id = "Facil" })
+                        </span>
+                        @Html.Label("Facil", "Facil", new { @class = "form-control" })
+                    </div>
+                    <br />
+
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            @Html.RadioButtonFor(m => m.Dificultad, "2", new { id = "Medio" })
+                        </span>
+                        @Html.Label("Medio", "Medio", new { @class = "form-control" })
+                    </div>
+                    <br />
+
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            @Html.RadioButtonFor(m => m.Dificultad, "3", new { id = "Dificil" })
+                        </span>
+                        @Html.Label("Dificil", "Dificil", new { @class = "form-control" })
+                    </div>
+                    <br />
+
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            @Html.RadioButtonFor(m => m.Dificultad, "4", new { id = "UnPocoDeTodo" })
+                        </span>
+                        @Html.Label("UnPocoDeTodo", "Un poco de todo", new { @class = "form-control" })
+                    </div>
+                    <br />
+
+                </div>
+
+                <button class="pull-right btn btn-default" type="submit">Confirmar y comenzar la prueba</button>
+
+            </div>
+        }
+    </div>
+</div>

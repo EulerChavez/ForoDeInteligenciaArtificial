@@ -24,6 +24,20 @@ namespace ForoIA.Migrations.ForoDb {
             context.Category.AddOrUpdate(new Models.Db.Category() { Name = "VideoJuegos" });
             context.Category.AddOrUpdate(new Models.Db.Category() { Name = "Domótica" });
 
+            context.Dificulty.AddOrUpdate(new Models.Db.Dificulty() { Name = "Facil" });
+            context.Dificulty.AddOrUpdate(new Models.Db.Dificulty() { Name = "Medio" });
+            context.Dificulty.AddOrUpdate(new Models.Db.Dificulty() { Name = "Dificl" });
+            context.Dificulty.AddOrUpdate(new Models.Db.Dificulty() { Name = "Un poco de todo" });
+
+            context.QuestionType.AddOrUpdate(new Models.Db.QuestionType() { Description = "Abierta" });
+            context.QuestionType.AddOrUpdate(new Models.Db.QuestionType() { Description = "Cerrada" });
+
+            context.Topic.AddOrUpdate(new Models.Db.Topic() { Description = "Unidad 1. " });
+            context.Topic.AddOrUpdate(new Models.Db.Topic() { Description = "Unidad 2. " });
+            context.Topic.AddOrUpdate(new Models.Db.Topic() { Description = "Unidad 3. " });
+            context.Topic.AddOrUpdate(new Models.Db.Topic() { Description = "Unidad 4. " });
+            context.Topic.AddOrUpdate(new Models.Db.Topic() { Description = "Unidad 5. " });
+
         }
 
     }

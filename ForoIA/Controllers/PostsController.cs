@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ForoIA.Models.Db;
+using ForoIA.ViewModel.Post;
 
 namespace ForoIA.Controllers {
 
@@ -90,6 +91,14 @@ namespace ForoIA.Controllers {
 
             var viewModel = db.Post
                               .Where(p => p.UserName.Equals(userName))
+                              .Select(p => new UserPostsViewModel() {
+
+                                  Id = p.Id,
+                                  Title = p.Title,
+                                  Category = p.Category.Name,
+                                  Date = p.Date
+
+                              })
                               .ToList();
 
             return PartialView("_UserPosts", viewModel);
@@ -106,13 +115,22 @@ namespace ForoIA.Controllers {
         }
 
         // POST: Posts/Create
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
-        // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,UserName,Date,CategoryId,Review,Content")] Post post) {
+        public ActionResult Create([Bind(Include = "Title,CategoryId,Review,Content")] CreatePostViewModel viewModel) {
 
             if (ModelState.IsValid) {
+
+                var post = new Post() {
+
+                    Title = viewModel.Title,
+                    CategoryId = viewModel.CategoryId,
+                    Review = viewModel.Review,
+                    Content = viewModel.Content,
+                    UserName = User.Identity.Name,
+                    Date = DateTime.Now,
+
+                };
 
                 db.Post.Add(post);
 
@@ -122,9 +140,9 @@ namespace ForoIA.Controllers {
 
             }
 
-            ViewBag.CategoryId = new SelectList(db.Category, "Id", "Name", post.CategoryId);
+            ViewBag.CategoryId = new SelectList(db.Category, "Id", "Name", viewModel.CategoryId);
 
-            return View(post);
+            return View(viewModel);
 
         }
 
@@ -141,20 +159,35 @@ namespace ForoIA.Controllers {
                 return HttpNotFound();
             }
 
-            ViewBag.CategoryId = new SelectList(db.Category, "Id", "Name", post.CategoryId);
+            var viewModel = new EditPostViewModel() {
 
-            return View(post);
+                Id = post.Id,
+                Title = post.Title,
+                Review = post.Review,
+                CategoryId = post.CategoryId,
+                Content = post.Content
+
+            };
+
+            ViewBag.CategoryId = new SelectList(db.Category, "Id", "Name", viewModel.CategoryId);
+
+            return View(viewModel);
 
         }
 
         // POST: Posts/Edit/5
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
-        // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,UserName,Date,CategoryId,Review,Content")] Post post) {
+        public ActionResult Edit([Bind(Include = "Id,Title,CategoryId,Review,Content")] EditPostViewModel viewModel) {
 
             if (ModelState.IsValid) {
+
+                var post = db.Post.Find(viewModel.Id);
+
+                post.Title = viewModel.Title;
+                post.CategoryId = viewModel.CategoryId;
+                post.Review = viewModel.Review;
+                post.Content = viewModel.Content;
 
                 db.Entry(post).State = EntityState.Modified;
 
@@ -164,9 +197,9 @@ namespace ForoIA.Controllers {
 
             }
 
-            ViewBag.CategoryId = new SelectList(db.Category, "Id", "Name", post.CategoryId);
+            ViewBag.CategoryId = new SelectList(db.Category, "Id", "Name", viewModel.CategoryId);
 
-            return View(post);
+            return View(viewModel);
 
         }
 
@@ -177,13 +210,23 @@ namespace ForoIA.Controllers {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Post post = db.Post.Find(id);
+            var viewModel = db.Post
+                              .Where(p => p.UserName.Equals(User.Identity.Name) && p.Id == id)
+                              .Select(p => new UserPostsViewModel() {
 
-            if (post == null) {
+                                  Id = p.Id,
+                                  Title = p.Title,
+                                  Category = p.Category.Name,
+                                  Date = p.Date
+
+                              })
+                              .FirstOrDefault();
+
+            if (viewModel == null) {
                 return HttpNotFound();
             }
 
-            return View(post);
+            return View(viewModel);
 
         }
 
@@ -193,9 +236,7 @@ namespace ForoIA.Controllers {
         public ActionResult DeleteConfirmed(int id) {
 
             Post post = db.Post.Find(id);
-            //db.Entry(post).Collection(p => p.Commments).Load();
 
-            //db.Comment.RemoveRange(post.Commments);
             db.Post.Remove(post);
 
             db.SaveChanges();
