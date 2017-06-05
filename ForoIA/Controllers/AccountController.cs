@@ -41,6 +41,21 @@ namespace ForoIA.Controllers {
 
         }
 
+        [AllowAnonymous]
+        [ChildActionOnly]
+        [OutputCache(Duration = 120, Location = System.Web.UI.OutputCacheLocation.Client)]
+        public ContentResult UserCount() {
+
+            int count = 0;
+
+            using (var db = new ApplicationDbContext()) {
+                count = db.Users.Count();
+            }
+
+            return Content($"{count}");
+
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]

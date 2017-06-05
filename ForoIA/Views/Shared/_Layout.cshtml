@@ -42,14 +42,14 @@
         <div class="row">
 
             <!-- Blog Entries Column -->
-            <div class="col-md-8" id="renderBody">
+            <div class="col-md-8" id="renderBody" role="main">
                 <br />
 
                 @RenderBody()
             </div>
 
             <!-- Blog Sidebar Widgets Column -->
-            <div class="col-md-4">
+            <div class="col-md-4" role="complementary">
 
                 <br />
 
@@ -76,7 +76,7 @@
                 <!--Chat-->
 
                 <div class="well">
-                    <h4>Total de usuarios: @(new Random().Next(0, 1000))</h4>
+                    <h4>Total de usuarios: @Html.Action("UserCount", "Account")</h4>
                     <p>Total de visitas: @(new Random().Next(1000, 9000))</p>
                 </div>
 

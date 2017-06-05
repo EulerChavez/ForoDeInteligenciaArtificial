@@ -214,7 +214,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\ChatHub.cs" />
-    <Compile Include="Migrations\ForoDb\201705311442324_Initial.cs" />
+    <Compile Include="Migrations\ForoDb\201706051344346_Initial.cs" />
     <Compile Include="Migrations\ForoDb\ForoDbConfig.cs" />
     <Compile Include="Migrations\Identity\201705231932215_Initial.cs" />
     <Compile Include="Migrations\Identity\IdentityConfig.cs" />

@@ -119,7 +119,7 @@ namespace ForoIA.Migrations.ForoDb
                 .Index(t => t.DificultyId);
             
             CreateTable(
-                "dbo.TestAnwsers",
+                "dbo.TestAnswers",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -139,8 +139,8 @@ namespace ForoIA.Migrations.ForoDb
         
         public override void Down()
         {
-            DropForeignKey("dbo.TestAnwsers", "TestId", "dbo.Tests");
-            DropForeignKey("dbo.TestAnwsers", "ConfigurationTestId", "dbo.ConfigurationTests");
+            DropForeignKey("dbo.TestAnswers", "TestId", "dbo.Tests");
+            DropForeignKey("dbo.TestAnswers", "ConfigurationTestId", "dbo.ConfigurationTests");
             DropForeignKey("dbo.ConfigurationTests", "DificultyId", "dbo.Dificulties");
             DropForeignKey("dbo.Comments", "PostId", "dbo.Posts");
             DropForeignKey("dbo.Posts", "CategoryId", "dbo.Categories");
@@ -148,8 +148,8 @@ namespace ForoIA.Migrations.ForoDb
             DropForeignKey("dbo.Tests", "QuestionTypeId", "dbo.QuestionTypes");
             DropForeignKey("dbo.Tests", "DificultId", "dbo.Dificulties");
             DropForeignKey("dbo.Answers", "QuestionId", "dbo.Tests");
-            DropIndex("dbo.TestAnwsers", new[] { "TestId" });
-            DropIndex("dbo.TestAnwsers", new[] { "ConfigurationTestId" });
+            DropIndex("dbo.TestAnswers", new[] { "TestId" });
+            DropIndex("dbo.TestAnswers", new[] { "ConfigurationTestId" });
             DropIndex("dbo.ConfigurationTests", new[] { "DificultyId" });
             DropIndex("dbo.Comments", new[] { "PostId" });
             DropIndex("dbo.Posts", new[] { "CategoryId" });
@@ -157,7 +157,7 @@ namespace ForoIA.Migrations.ForoDb
             DropIndex("dbo.Tests", new[] { "QuestionTypeId" });
             DropIndex("dbo.Tests", new[] { "DificultId" });
             DropIndex("dbo.Answers", new[] { "QuestionId" });
-            DropTable("dbo.TestAnwsers");
+            DropTable("dbo.TestAnswers");
             DropTable("dbo.ConfigurationTests");
             DropTable("dbo.Comments");
             DropTable("dbo.Posts");
