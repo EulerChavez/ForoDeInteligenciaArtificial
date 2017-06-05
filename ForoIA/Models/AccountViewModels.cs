@@ -57,7 +57,7 @@ namespace ForoIA.Models {
     public class LoginViewModel {
 
         [Required]
-        [Display(Name = "Usario")]
+        [Display(Name = "Usuario")]
         [StringLength(25)]
         public string UserName { get; set; }
 

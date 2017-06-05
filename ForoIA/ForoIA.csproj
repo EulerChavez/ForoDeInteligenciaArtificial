@@ -207,6 +207,7 @@
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MultimediaController.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\TestsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -260,7 +261,11 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Files\IA2.pdf" />
+    <Content Include="Files\IA1.pdf" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\IAESIME - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\IAESIME - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\IteligenciaArtificialESIME - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\IteligenciaArtificialESIME - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
@@ -348,6 +353,8 @@
     <Content Include="Views\Tests\_Question.cshtml" />
     <Content Include="Views\Tests\ConfigurarPrueba.cshtml" />
     <Content Include="Views\Tests\Question.cshtml" />
+    <Content Include="Views\Tests\PruebaFinalizada.cshtml" />
+    <Content Include="Views\Multimedia\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

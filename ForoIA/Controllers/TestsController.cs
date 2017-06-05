@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using ForoIA.Models.Db;
 using ForoIA.ViewModel.Test;
+using System.Diagnostics;
+using System.Text;
 
 namespace ForoIA.Controllers {
 
@@ -25,6 +27,38 @@ namespace ForoIA.Controllers {
 
         // GET: Tests/ConfigurarPrueba
         public ActionResult ConfigurarPrueba() {
+
+            // Se valida si el usuario ya cuenta con un examen en progreso
+            var configTest = db.ConfigurationTest.FirstOrDefault(c => c.Username.Equals(User.Identity.Name));
+
+            // Si no es null, ya hay examen
+            if (configTest != null) {
+
+                // Se obtiene la pregunta
+                var siguientePregunta = db.TestAnswer
+                                        .Include(ta => ta.Test)
+                                        .Where(ta => ta.ConfigurationTestId == configTest.Id && ta.IsAnswered == false)
+                                        .AsEnumerable()
+                                        .Select(ta => new QuestionViewModel() {
+
+                                            Id = ta.Id,
+                                            Question = ta.Test.Question,
+                                            QuestionType = ta.Test.QuestionTypeId,
+                                            Answers = ta.Test.Answers.ToList().Select(a => new KeyValuePair<int, string>(a.Id, a.Description))
+
+                                        })
+                                        .FirstOrDefault();
+
+                // Si no es null, aún hay preguntas por responder
+                if (siguientePregunta != null) {
+
+                    return View("Question", siguientePregunta);
+
+                }
+
+                return RedirectToAction("PruebaFinalizada");
+
+            }
 
             return View();
 
@@ -167,7 +201,7 @@ namespace ForoIA.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Siguiente(int AnswerId, string AnswerText) {
-            
+
             // Se obtiene el nombre del usuaario
             var userName = User.Identity.Name;
 
@@ -199,11 +233,131 @@ namespace ForoIA.Controllers {
                                         Answers = ta.Test.Answers.ToList().Select(a => new KeyValuePair<int, string>(a.Id, a.Description))
 
                                     })
-                                    .First();
+                                    .FirstOrDefault();
 
             ModelState.Clear();
 
-            return View("Question", siguientePregunta);
+            // Aun hay preguntas por responder
+            if (siguientePregunta != null) {
+
+                return View("Question", siguientePregunta);
+
+            }
+
+            return RedirectToAction("PruebaFinalizada");
+
+        }
+
+        public ActionResult PruebaFinalizada() {
+
+            var userName = User.Identity.Name;
+
+            // Se obtiene la configuración y las respuestas del test
+            var configTest = db.ConfigurationTest
+                               .Include(c => c.TestAnswer)
+                               .FirstOrDefault(c => c.Username.Equals(userName));
+
+            // Se obtienen los Id's de las respuestas cerradas constestadas
+            var answersIdSelected = configTest.TestAnswer
+                                              .Select(ta => ta.AnwserIdSelected)
+                                              .ToList();
+
+            // Se obtienen las respuestas
+            var answers = db.Answer
+                            .Where(a => answersIdSelected.Contains(a.Id))
+                            .ToList();
+
+            // Se cuentan las respuestas correctas
+            var correctas = answers.Count(a => a.IsCorrect == true);
+
+            // Se obtienen los Id's de las preguntas abiertas contestadas
+            var openQuestions = configTest.TestAnswer
+                                          .Where(ta => !string.IsNullOrEmpty(ta.TextAnswer) && ta.AnwserIdSelected == 0)
+                                          .Select(ta => ta.TestId)
+                                          .ToList();
+
+            // Se itera si hay preguntas abiertas
+            foreach (var questionId in openQuestions) {
+
+                // Se obtiene la respuesta de la BD
+                var answer = db.Answer
+                               .Where(a => a.QuestionId == questionId)
+                               .FirstOrDefault();
+
+                // Se obtiene el texto respondido
+                var answered = configTest.TestAnswer
+                                     .FirstOrDefault(ta => ta.TestId == questionId);
+
+                // Se hace la comparativa del texto
+                var text1 = new StringBuilder(answer.Description.ToLower());
+                var text2 = new StringBuilder(answered.TextAnswer.ToLower());
+
+                text1.Replace(" la ", " ");
+                text1.Replace(" las ", " ");
+                text1.Replace(" el ", " ");
+                text1.Replace(" ellos ", " ");
+                text1.Replace(" los ", " ");
+                text1.Replace(" por ", " ");
+                text1.Replace(" es ", " ");
+                text1.Replace(" a ", " ");
+                text1.Replace(" de ", " ");
+                text1.Replace(" y ", " ");
+                text1.Replace(" que ", " ");
+                text1.Replace(" o ", " ");
+                text1.Replace(" si ", " ");
+                text1.Replace(" sus ", " ");
+                text1.Replace(";", " ");
+                text1.Replace(".", " ");
+                text1.Replace(",", " ");
+
+                text2.Replace(" la ", " ");
+                text2.Replace(" las ", " ");
+                text2.Replace(" el ", " ");
+                text2.Replace(" ellos ", " ");
+                text2.Replace(" los ", " ");
+                text2.Replace(" por ", " ");
+                text2.Replace(" es ", " ");
+                text2.Replace(" a ", " ");
+                text2.Replace(" de ", " ");
+                text2.Replace(" y ", " ");
+                text2.Replace(" que ", " ");
+                text2.Replace(" o ", " ");
+                text2.Replace(" si ", " ");
+                text2.Replace(" sus ", " ");
+                text2.Replace(";", " ");
+                text2.Replace(".", " ");
+                text2.Replace(",", " ");
+
+                var answerText = text1.ToString();
+                var words = answerText.Split(' ').Where(t => !string.IsNullOrWhiteSpace(t)).ToList();
+
+                var newText = text2.ToString().Split(' ').Where(t => !string.IsNullOrWhiteSpace(t)).ToList();
+
+                int coincidencias = 0;
+
+                foreach (var word in newText) {
+
+                    if (answerText.Contains(word)) {
+
+                        coincidencias++;
+
+                        answerText = answerText.Replace(word, " ");
+
+                    }
+
+                }
+
+                if ((double)(coincidencias * 100) / words.Count() >= 50) {
+
+                    correctas++;
+
+                }
+
+            }
+
+            ViewBag.Calificacion = String.Format("{0:0.0}", ((double)correctas / configTest.TestAnswer.Count) * 10.0);
+
+            return View();
 
         }
 
