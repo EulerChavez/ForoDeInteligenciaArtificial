@@ -9,6 +9,7 @@ namespace ForoIA.Controllers {
 
     public class MultimediaController : Controller {
 
+        [OutputCache(Duration = 120, Location = System.Web.UI.OutputCacheLocation.Client)]
         public ActionResult Index() {
 
             List<string> urls = new List<string>() {
